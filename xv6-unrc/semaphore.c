@@ -208,7 +208,7 @@ semfree(int semid)
 	// OK
 	s->refcount--;//Decrement the refcounter because I release the semaphore
 	proc->sem[idproc] = 0; //release the semaphore in arraysem of proc	  			
-		
+	
 	release(&stable.lock);
 	return 0;
 }

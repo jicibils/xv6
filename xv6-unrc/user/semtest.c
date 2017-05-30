@@ -101,6 +101,94 @@ testcase2(void)
 	exit();
 }
 
+//Create and make semup and show de value, before and after of modification
+void 
+testcase3(void)
+{
+	// int resultsemup;	
+	// struct sem *s;
+
+	sem1 = semget(-1, 0);
+	printf(1, "Just created semaphore with identifier: %d\n", sem1);
+
+	if(sem1 < 0)
+	{
+		printf(1, "Error\n", sem1);
+		exit();
+	}
+
+	// s = getstable() + sem1;
+
+	printf(1, "semaphore created : %d\n", sem1);
+	// printf(1, "semaphore's value : %d\n", s.value);
+
+	if (semup(sem1) == 0){
+
+		printf(1, "semaphore created : %d\n", sem1);
+		// printf(1, "semaphore's value : %d\n", s.value);
+		exit();
+	}
+
+	printf(1, "Error: the semaphore's value is wrong \n");
+	exit();
+}
+
+//Create and make semdown and show de value, before and after of modification
+void 
+testcase4(void)
+{
+	// int resultsemup;	
+	// struct sem *s;
+
+	sem1 = semget(-1, 0);
+	printf(1, "Just created semaphore with identifier: %d\n", sem1);
+
+	if(sem1 < 0)
+	{
+		printf(1, "Error\n", sem1);
+		exit();
+	}
+
+	// s = getstable() + sem1;
+
+	printf(1, "semaphore created : %d\n", sem1);
+	// printf(1, "semaphore's value : %d\n", s.value);
+
+	if (semdown(sem1) == 0){
+
+		printf(1, "semaphore created : %d\n", sem1);
+		// printf(1, "semaphore's value : %d\n", s.value);
+		exit();
+	}
+
+	printf(1, "Error: the semaphore's value is wrong \n");
+	exit();
+}
+
+//Create and meke semfree 
+void 
+testcase5(void)
+{
+	sem1 = semget(-1, 0);
+	printf(1, "Just created semaphore with identifier: %d\n", sem1);
+
+	if(sem1 < 0)
+	{
+		printf(1, "Error\n", sem1);
+		exit();
+	}
+	printf(1, "semaphore created : %d\n", sem1);
+
+	if (semfree(sem1) == 0){
+
+		printf(1, "semaphore free : %d\n", sem1);
+		// printf(1, "semaphore's value : %d\n", s.value);
+		exit();
+	}
+
+	printf(1, "Error: the semaphore's value is wrong \n");
+	exit();
+}
 
 int
 main(void)
@@ -108,6 +196,8 @@ main(void)
 	// testcase0();//OK
 	// testcase1();//OK
 	// testcase2();//OK
-
+	// testcase3();
+	// testcase4();
+	testcase5();
 	exit();
 }
