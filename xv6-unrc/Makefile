@@ -177,6 +177,7 @@ UPROGS=\
 	_quantumtest\
 	_prioritytest\
 	_semtest\
+	_program\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
