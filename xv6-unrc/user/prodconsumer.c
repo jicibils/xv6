@@ -7,7 +7,7 @@
 #define PRODUCERS 4
 #define CONSUMERS 2
 #define BUFF_SIZE 4
-#define N  4
+// #define N  4
 
 int buffer;
 int semprod;
@@ -17,31 +17,31 @@ int semprueba;
 int semprueba2;
 
 void
-productor(int val)
+producer(int val)
 {
-  printf(1,"-- INICIA PRODUCTOR --\n");
+  printf(1,"-- START PRODUCER --\n");
   semdown(semprod); // empty
   semdown(sembuff); // mutex
-  //  REGION CRITICA
+  //  Critical region
   val = (val) + 1;
   printf(1,"-- Produce: %d\n",val);
   semup(sembuff); //mutex
   semup(semcom); // full
-  printf(1,"-- FIN PRODUCTOR --\n");
+  printf(1,"-- END PRODUCER --\n");
 }
 
 void
-consumidor(int val)
+consumer(int val)
 { 
-  printf(1,"-- INICIA CONSUMIDOR --\n");
+  printf(1,"-- START CONSUMER --\n");
   semdown(semcom); // full
   semdown(sembuff); // mutex
-  // REGION CRITICA
+  // Critical region
   val = (val) - 1;
   printf(1,"-- Consume: %d\n",val);
   semup(sembuff); // mutex
   semup(semprod); // empty
-  printf(1,"-- FIN CONSUMIDOR --\n");
+  printf(1,"-- END CONSUMER --\n");
 }
 
 int
@@ -51,7 +51,7 @@ main(void)
   int pid_prod, pid_com, i;
 
   printf(1,"-------------------------- INIT VALUE: [%d] \n", val);
-  printf(1,"--- Tamano de buffer: %d\n", BUFF_SIZE);
+  printf(1,"-------------------------- BUFFER SIZE: %d\n", BUFF_SIZE);
   
   // creo semaforo productor 
   semprod = semget(-1,BUFF_SIZE); // empty
@@ -77,16 +77,16 @@ main(void)
     // create producer process
     pid_prod = fork();
     if(pid_prod < 0){
-      printf(1,"can't create producer process\n");
+      printf(1,"Can't create producer process\n");
       exit(); 
     }
     // launch producer process
     if(pid_prod == 0){ // hijo
-      printf(1," # hijo productor\n");
+      printf(1," # child producer\n");
       semget(semprod,0);
       semget(semcom,0);
       semget(sembuff,0);
-      productor(val); 
+      producer(val); 
       exit();
     }
   }
@@ -100,20 +100,20 @@ main(void)
     }
     // launch consumer process
     if(pid_com == 0){ // hijo
-      printf(1," # hijo consumidor\n");
+      printf(1," # child consumer\n");
       semget(semprod,0);
       semget(semcom,0);
       semget(sembuff,0);
-      consumidor(val); 
+      consumer(val); 
       exit();
     }
   }
 
-  for (i = 0; i < PRODUCERS + CONSUMERS; i++) { // 6 
+  for (i = 0; i < PRODUCERS + CONSUMERS; i++) {
     wait();
   }
    
-  printf(1,"-------------------------- FINAL VALUE: [%x]  \n", val);
+  printf(1,"-------------------------- FINAL VALUE OF VAL: %x  \n", val);
   exit();
 }
 

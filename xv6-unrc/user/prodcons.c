@@ -1,10 +1,3 @@
-// Ejemplo de Productor consumidor.
-//   
-// Recordar: 
-// * acceso al contenido
-// & obtension de la direccion
-// printf(1,"LOG semprod %d\n", semprod);
-
 #include "types.h"
 #include "user.h"
 #include "fcntl.h"
@@ -34,6 +27,7 @@ productor(int fd)
   semdown(sembuff); // mutex
   //  REGION CRITICA
   //open, read, n++, write, close
+  
   
   fd = open("buffer", O_RDWR);
   read(fd, &n, 1);
