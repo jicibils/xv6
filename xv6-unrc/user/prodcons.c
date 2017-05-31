@@ -16,7 +16,7 @@ int semprueba;
 int semprueba2;
 
 void
-productor(int fd)
+productor(int r, int w)
 {
   // int fd;
   int n;
@@ -27,13 +27,13 @@ productor(int fd)
   semdown(sembuff); // mutex
   //  REGION CRITICA
   //open, read, n++, write, close
+
   
-  
-  fd = open("buffer", O_RDWR);
-  read(fd, &n, 1);
+  //fd = open("buffer", O_RDWR);
+  read(r, &n, 1);
   m = n++;
-  write(fd, &m, 1);
-  close(fd);
+  write(w, &m, 1);
+  // close(w);
 
   // fscanf(fp, "%d", &n);
   // fprintf(fp, "%d", n++);
@@ -45,7 +45,7 @@ productor(int fd)
 }
 
 void
-consumidor(int fd)
+consumidor(int r, int w)
 { 
   int n;
   int m;
@@ -58,12 +58,12 @@ consumidor(int fd)
   // fscanf(fp, "%d", &n);
   // fprintf(fp, "%d", n++);
   
-  fd = open("buffer", O_RDWR);
-  read(fd, &n, 1);
+  //fd = open("buffer", O_RDWR);
+  read(r, &n, 1);
   m = n--;
-  write(fd, &m, 1);
+  write(w, &m, 1);
   
-  close(fd);
+  // close(fd);
 
   // printf(1,"-- Consume: %d\n",val);
   semup(sembuff); // mutex
@@ -74,12 +74,15 @@ consumidor(int fd)
 int
 main(void)
 {
-  int fd;
+  int fd, r, w;
   int val = 8;
   int res;
   int pid_prod, pid_com, i;
 
   fd = open("buffer", O_CREATE);
+  r = open("buffer", O_CREATE);
+  w = open("buffer", O_CREATE);
+
   if(fd >= 0) {
     printf(1, "ok: create buffer file succeed\n");
   } else {
@@ -122,7 +125,7 @@ main(void)
       semget(semprod,0);
       semget(semcom,0);
       semget(sembuff,0);
-      productor(fd); 
+      productor(r, w); 
       exit();
     }
   }
@@ -140,7 +143,7 @@ main(void)
       semget(semprod,0);
       semget(semcom,0);
       semget(sembuff,0);
-      consumidor(fd); 
+      consumidor(r, w); 
       exit();
     }
   }
@@ -149,9 +152,13 @@ main(void)
     wait();
   }
 
-  if(read(fd, &res, 1) == val)
-    printf(1, "Final result: %s\n", "TRUE");
+  read(w, &res, 1);
+
+  
+  printf(1, "Final result: %d\n", res);
    
+  close(r);
+  close(w);
   close(fd);
 
   exit();
