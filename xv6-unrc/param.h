@@ -14,3 +14,4 @@
 #define NLEVEL       4   // maximum number of levels of queue multilevels
 #define MAXSEM		 3   // maximun number of semaphore
 #define MAXSEMPROC   3   // maximun number of semaphore per process
+#define MAXPAGE		 3   // 
