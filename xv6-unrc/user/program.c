@@ -3,36 +3,39 @@
 #include "fcntl.h"
 #include "stat.h"
 #include "syscall.h"
-
 int
 main(void)
 {
-  int fd;
-  // int n;
-  // int val = 8;
-  // int pid_prod, pid_com, i;
-  // char path[] = "buffer";
-  int data[512];
+  int r,w,fd;
 
-  fd = open("buffer", O_CREATE | O_RDWR);
+  fd = open("arch", O_CREATE);
+  r = open("arch", O_RDWR);
+  w = open("arch", O_RDWR);
   if(fd >= 0) {
     printf(1, "ok: create buffer file succeed\n");
   } else {
-    printf(1, "error: create buffer file failed\n");
+    printf(1, "error: create buffer file failed 1\n");
+    exit();}
+  if(r >= 0) {
+    printf(1, "ok: create buffer file succeed\n");
+  } else {
+    printf(1, "error: create buffer file failed 1\n");
+    exit(); }
+  if(w >= 0) {
+    printf(1, "ok: create buffer file succeed\n");
+  } else {
+    printf(1, "error: create buffer file failed 2\n");
     exit();
   }
-
-  int t = 100;
-  write(fd, data, sizeof t);
-  
-  read(fd, data, sizeof data);
-
-
-  //Como se imprime contenido de data??
-  printf(1,"-------------------------- VALOR INICIAL: [%d] \n", data[1]);
-  // printf(1,"--- Tamano de buffer: %d\n", BUFF_SIZE);
-  
+  int b = 7;
+  int buffer;
+  write(w, &b, 1);  
+  printf(1,"-------------------------- ANTES DEL READ: \n");
+  printf(1,"%d\n", b);  
+  read(r, &buffer, 1);
+  printf(1,"-------------------------- DESPUES DEL READ: %d\n",buffer);
+  close(r);
+  close(w);
   close(fd);
   exit();
-  // printf(1,"------------------------- VALOR FINAL: [%x]  \n", val);
 }
