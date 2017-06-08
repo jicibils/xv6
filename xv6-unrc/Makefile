@@ -177,7 +177,8 @@ UPROGS=\
 	_quantumtest\
 	_prioritytest\
 	_semtest\
-	_program\
+	_prodconsumer\
+	_prodcons\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
