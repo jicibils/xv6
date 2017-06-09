@@ -77,6 +77,52 @@ trap(struct trapframe *tf)
             cpu->id, tf->cs, tf->eip);
     lapiceoi();
     break;
+
+
+
+  case T_IRQ0 + T_STACK:// stack exception
+  // case T_IRQ0 + T_PGFLT:// page fault
+  //porque tira error si le saco el comentario de la linea de arriba!!!
+  { 
+    int sz;
+
+    if(proc == 0 || (tf->cs&3) == 0)//mode kernel
+      panic("trap");
+
+    //mode user
+
+
+    int dirinterrupt = rcr2();
+    int stackb = proc->stacksize;
+
+    if(!(dirinterrupt >= stackb && dirinterrupt <= stackb+(MAXSTACKPAGES-1 * PGSIZE))){//range of stack valid whitout hole
+      cprintf("stack overflow");
+      kill(proc->pid);
+    }
+
+    if(proc->allocatedpages >= MAXSTACKPAGES){//there aren't pages available
+      cprintf("stack overflow");
+      kill(proc->pid);      
+    }  
+
+    dirinterrupt = PGROUNDUP(dirinterrupt+PGSIZE);//Correctly set the top of the SP
+    
+    //llamar a allocuvm con el rango de lo que quieras allocar
+    if((sz = allocuvm(proc->pgdir,dirinterrupt,stackb)) == 0);
+      panic("trap/allocuvm");
+
+      
+    proc->stacksize = sz;
+    proc->allocatedpages++;
+
+    //como hago para saber cuanto sumarle a alloctedpages 
+    //como se si se agregaron 2 paginas o 1?? 
+    break;
+  }
+
+
+
+
    
   //PAGEBREAK: 13
   default:
