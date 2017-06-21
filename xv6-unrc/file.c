@@ -8,6 +8,10 @@
 #include "fs.h"
 #include "file.h"
 #include "spinlock.h"
+#include "stat.h"
+#include "mmu.h"
+#include "proc.h"
+
 
 struct devsw devsw[NDEV];
 struct {
@@ -154,3 +158,38 @@ filewrite(struct file *f, char *addr, int n)
   panic("filewrite");
 }
 
+// Moves the logical cursor of a file
+int
+fseek(int fd,int pos)
+{
+  int fdproc;
+
+  for(fdproc = 0; fdproc < NOFILE; fdproc++){
+
+    if(fdproc == fd && proc->ofile[fdproc] == 0)
+      return -1;
+
+    if(fdproc == fd)
+      proc->ofile[fd]->off = pos;   
+  }
+
+  return pos;
+  }
+
+
+
+
+
+int
+flock(int fd)
+{
+  return 0;
+  
+}
+
+int
+funlock(int fd)
+{
+  return 0;
+  
+}
