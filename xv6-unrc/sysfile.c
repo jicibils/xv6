@@ -440,3 +440,35 @@ sys_pipe(void)
   fd[1] = fd1;
   return 0;
 }
+
+int
+sys_fseek(void)
+{
+  int fd,pos;
+  if(argint(0, &fd) < 0)
+    return -1;
+  if(argint(1, &pos) < 0)
+    return -1;
+
+  return fseek(fd,pos);
+}
+
+int
+sys_flock(void)
+{
+  int fd;
+  if(argint(0, &fd) < 0)
+    return -1;
+
+  return flock(fd);
+}
+
+int
+sys_funlock(void)
+{
+  int fd;
+  if(argint(0, &fd) < 0)
+    return -1;
+
+  return funlock(fd);
+}
