@@ -183,8 +183,19 @@ fseek(int fd,int pos)
 int
 flock(int fd)
 {
-  return 0;
-  
+  int fdproc,res;
+
+  for(fdproc = 0; fdproc < NOFILE; fdproc++){
+
+    if(fdproc == fd && proc->ofile[fdproc] == 0)
+      return -1;
+
+    if(fdproc == fd)
+      res = semdown(proc->ofile[fd]->semid);   
+  }
+
+  return res;
+
 }
 
 int
