@@ -13,6 +13,8 @@
 #include "fs.h"
 #include "file.h"
 #include "fcntl.h"
+#include "semaphore.h"
+
 
 // Fetch the nth word-sized system call argument as a file descriptor
 // and return both the descriptor and the corresponding struct file.
@@ -325,6 +327,11 @@ sys_open(void)
   f->type = FD_INODE;
   f->ip = ip;
   f->off = 0;
+
+  f->semid = semget(-1,1);
+  if(f->semid < 0)
+    panic("semget in open file");
+
   f->readable = !(omode & O_WRONLY);
   f->writable = (omode & O_WRONLY) || (omode & O_RDWR);
   return fd;
