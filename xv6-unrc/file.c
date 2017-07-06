@@ -176,10 +176,6 @@ fseek(int fd,int pos)
   return pos;
   }
 
-
-
-
-
 int
 flock(int fd)
 {
@@ -201,6 +197,17 @@ flock(int fd)
 int
 funlock(int fd)
 {
-  return 0;
+  int fdproc,res;
+
+  for(fdproc = 0; fdproc < NOFILE; fdproc++){
+
+    if(fdproc == fd && proc->ofile[fdproc] == 0)
+      return -1;
+
+    if(fdproc == fd)
+      res = semup(proc->ofile[fd]->semid);
+  }  
+  
+  return res;
   
 }
