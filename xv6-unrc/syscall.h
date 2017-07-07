@@ -29,3 +29,5 @@
 #define SYS_fseek  28
 #define SYS_flock  29
 #define SYS_funlock  30
+#define SYS_fgetoff  31
+

@@ -29,6 +29,11 @@ int semget(int semid, int initvalue);
 int semfree(int semid); 
 int semdown(int semid); 
 int semup(int semid); 
+int fseek(int fd,int pos); 
+int flock(int fd); 
+int funlock(int fd); 
+int fgetoff(int fd); 
+
 // ulib.c
 int stat(char*, struct stat*);
 char* strcpy(char*, char*);

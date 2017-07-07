@@ -36,6 +36,7 @@ int             filewrite(struct file*, char*, int n);
 int 			fseek(int fd,int pos);
 int 			flock(int fd);
 int 			funlock(int fd);
+int 			fgetoff(int fd);
 
 
 // fs.c

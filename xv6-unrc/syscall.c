@@ -108,6 +108,7 @@ extern int sys_semup(void);
 extern int sys_fseek(void);
 extern int sys_flock(void);
 extern int sys_funlock(void);
+extern int sys_fgetoff(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -140,6 +141,7 @@ static int (*syscalls[])(void) = {
 [SYS_fseek] sys_fseek,
 [SYS_flock] sys_flock,
 [SYS_funlock] sys_funlock,
+[SYS_fgetoff] sys_fgetoff,
 };
 
 void

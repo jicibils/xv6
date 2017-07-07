@@ -38,3 +38,5 @@ SYSCALL(semdown)
 SYSCALL(fseek)
 SYSCALL(flock)
 SYSCALL(funlock)
+SYSCALL(fgetoff)
+

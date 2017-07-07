@@ -180,6 +180,8 @@ UPROGS=\
 	_prodconsumer\
 	_prodcons\
 	_program\
+	_fseektest\
+	_flocktest\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)

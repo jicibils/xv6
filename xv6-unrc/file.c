@@ -211,3 +211,21 @@ funlock(int fd)
   return res;
   
 }
+
+// return the file's offset
+int
+fgetoff(int fd)
+{
+  int fdproc,offset;
+
+  for(fdproc = 0; fdproc < NOFILE; fdproc++){
+
+    if(fdproc == fd && proc->ofile[fdproc] == 0)
+      return -1;
+
+    if(fdproc == fd)
+      offset = proc->ofile[fd]->off;   
+  }
+
+  return offset;
+  }

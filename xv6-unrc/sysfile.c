@@ -328,9 +328,9 @@ sys_open(void)
   f->ip = ip;
   f->off = 0;
 
-  f->semid = semget(-1,1);
-  if(f->semid < 0)
-    panic("semget in open file");
+  // f->semid = semget(-1,1);
+  // if(f->semid < 0)
+  //   panic("semget in open file");
 
   f->readable = !(omode & O_WRONLY);
   f->writable = (omode & O_WRONLY) || (omode & O_RDWR);
@@ -478,4 +478,14 @@ sys_funlock(void)
     return -1;
 
   return funlock(fd);
+}
+
+int
+sys_fgetoff(void)
+{
+  int fd;
+  if(argint(0, &fd) < 0)
+    return -1;
+
+  return fgetoff(fd);
 }
