@@ -290,6 +290,7 @@ sys_open(void)
   struct file *f;
   struct inode *ip;
 
+
   if(argstr(0, &path) < 0 || argint(1, &omode) < 0)
     return -1;
 
@@ -327,13 +328,23 @@ sys_open(void)
   f->type = FD_INODE;
   f->ip = ip;
   f->off = 0;
-
-  // f->semid = semget(-1,1);
-  // if(f->semid < 0)
-  //   panic("semget in open file");
-
   f->readable = !(omode & O_WRONLY);
   f->writable = (omode & O_WRONLY) || (omode & O_RDWR);
+
+  if(f->cantaccessopen == 0){
+    f->semid = semget(-1,1);
+    if(f->semid < 0){
+      panic("semget in open file CANT 0");
+    }
+    goto end;
+  }
+
+  f->semid = semget(f->semid,1);
+  if(f->semid < 0){
+    panic("semget in open file CANT 0");
+  }
+
+end:
   return fd;
 }
 

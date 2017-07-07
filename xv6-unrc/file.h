@@ -7,6 +7,7 @@ struct file {
   struct inode *ip;
   uint off;
   int semid;
+  int cantaccessopen;
 };
 
 

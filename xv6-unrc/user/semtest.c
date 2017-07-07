@@ -193,11 +193,11 @@ testcase5(void)
 int
 main(void)
 {
-	// testcase0();//OK
+	testcase0();//OK
 	// testcase1();//OK
 	// testcase2();//OK
 	// testcase3();
 	// testcase4();
-	testcase5();
+	// testcase5();
 	exit();
 }
